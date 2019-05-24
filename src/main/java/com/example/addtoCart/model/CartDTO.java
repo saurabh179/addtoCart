@@ -1,6 +1,6 @@
 package com.example.addtoCart.model;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
 
 public class CartDTO {
 
@@ -10,7 +10,6 @@ public class CartDTO {
     private String email;
     private Integer quantity;
     private Integer price;
-
 
     public String getProductId() {
         return productId;

@@ -12,30 +12,24 @@ public class CartController {
   @Autowired
     CartService cartService;
 
-    @RequestMapping("/addToCart")
-    public CartDTO getEmployee(@RequestParam String email){
+    @RequestMapping(method = RequestMethod.GET , value="/getCart")
+    public CartDTO getCart(@RequestParam String email){
         return cartService.getCartById(email);
     }
 
 
-    @PostMapping("/addToCart")
-    public CartDTO createEmployee(@RequestBody CartDTO cartDTO){
-        try {
-            return cartService.createCart(cartDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    @RequestMapping(method = RequestMethod.POST , value = "/createCart")
+    public CartDTO createCart(@RequestBody CartDTO cartDTO) {
+        return cartService.createCart(cartDTO);
     }
 
-
-    @PutMapping("/addToCart")
-    public CartDTO updateEmployee(@RequestBody CartDTO employeeDTO){
-        return cartService.updateCart(employeeDTO);
+    @RequestMapping(method = RequestMethod.DELETE, value = "/removeProduct")
+    public void removeProduct(@RequestParam String productId, @RequestParam String variantId, @RequestParam String email) {
+        cartService.deleteParticularProduct(productId, variantId, email);
     }
 
-    @DeleteMapping("/addToCart")
-    public CartDTO deleteEmployee(@RequestParam String email){
+    @RequestMapping(method = RequestMethod.DELETE , value = "/deleteCart")
+    public CartDTO deleteCart(@RequestParam String email){
         return cartService.deleteCart(email);
     }
 

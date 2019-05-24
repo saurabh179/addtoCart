@@ -1,23 +1,23 @@
 package com.example.addtoCart.entity;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "cartTable")
-public class CartEntity {
-
+public class Cart {
 
 @Id
+@GeneratedValue
+private  Integer cartId;
+
+@Column(name = "email")
 private String email;
 
 
 @Column(name = "productId")
 private String productId;
+
 
 @Column(name = "variantId")
 private String variantId;
@@ -29,6 +29,13 @@ private  Integer quantity;
 @Column(name = "price")
 private Integer price;
 
+    public Integer getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(Integer cartId) {
+        this.cartId = cartId;
+    }
 
     public String getEmail() {
         return email;

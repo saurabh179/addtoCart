@@ -5,8 +5,8 @@ import com.example.addtoCart.model.CartDTO;
 
 public interface CartService {
 
-    CartDTO createCart(CartDTO employeeDTO) throws Exception;
+    CartDTO createCart(CartDTO cartDTO);
     CartDTO getCartById(String email);
     CartDTO deleteCart(String email);
-    CartDTO updateCart(CartDTO employeeDTO);
+    void deleteParticularProduct(String productId, String variantId, String email);
 }

@@ -1,12 +1,13 @@
 package com.example.addtoCart.service.impl;
 
-import com.example.addtoCart.entity.CartEntity;
+import com.example.addtoCart.entity.Cart;
 import com.example.addtoCart.model.CartDTO;
 import com.example.addtoCart.repository.CartRepository;
 import com.example.addtoCart.service.CartService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -17,23 +18,19 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO createCart(CartDTO cartDTO)  {
-
-
-        CartEntity cartEntity = new CartEntity();
-        BeanUtils.copyProperties(cartDTO, cartEntity);
-        CartEntity result = cartRepository.save(cartEntity);
+        Cart cart = new Cart();
+        BeanUtils.copyProperties(cartDTO, cart);
+        Cart result = cartRepository.save(cart);
         CartDTO resultDTO = new CartDTO();
         BeanUtils.copyProperties(result, resultDTO);
         return resultDTO;
-
-
     }
 
 
 
     @Override
     public CartDTO getCartById(String email) {
-        CartEntity result = cartRepository.findOne(email);
+        Cart result = cartRepository.findOne(email);
         CartDTO resultDTO = new CartDTO();
         BeanUtils.copyProperties(result,resultDTO);
         return resultDTO;
@@ -45,13 +42,10 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
+    @Transactional
     @Override
-    public CartDTO updateCart(CartDTO cartDTO) {
-        CartEntity cartEntity = new CartEntity();
-        BeanUtils.copyProperties(cartDTO,cartEntity);
-        CartEntity result = cartRepository.save(cartEntity);
-        CartDTO resultDTO = new CartDTO();
-        BeanUtils.copyProperties(result,resultDTO);
-        return resultDTO;
+    public void deleteParticularProduct(String productId, String variantId, String email) {
+        cartRepository.deleteByProductIdAndVariantIdAndEmail(productId,variantId,email);
     }
+
 }
