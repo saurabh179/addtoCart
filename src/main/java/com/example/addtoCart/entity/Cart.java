@@ -4,7 +4,7 @@ package com.example.addtoCart.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "cartTable")
+@Table(name = "cart_table")
 public class Cart {
 
 @Id
@@ -28,6 +28,18 @@ private  Integer quantity;
 
 @Column(name = "price")
 private Integer price;
+
+
+@Column(name = "merchantId")
+private String merchantId;
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
 
     public Integer getCartId() {
         return cartId;

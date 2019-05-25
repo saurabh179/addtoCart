@@ -1,12 +1,18 @@
 package com.example.addtoCart.service;
 
 
+import com.example.addtoCart.entity.Cart;
 import com.example.addtoCart.model.CartDTO;
+
+import java.util.List;
 
 public interface CartService {
 
-    CartDTO createCart(CartDTO cartDTO);
+    boolean createCart(CartDTO cartDTO,String token);
     CartDTO getCartById(String email);
-    CartDTO deleteCart(String email);
-    void deleteParticularProduct(String productId, String variantId, String email);
+    Boolean deleteCart(String email);
+    boolean deleteParticularProduct(String productId, String variantId, String merchantId,String email);
+
+    List<Cart> getEverythingFromCart(String email);
+
 }

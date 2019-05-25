@@ -8,6 +8,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 
 @Service
@@ -17,13 +20,23 @@ public class CartServiceImpl implements CartService {
     CartRepository cartRepository;
 
     @Override
-    public CartDTO createCart(CartDTO cartDTO)  {
-        Cart cart = new Cart();
-        BeanUtils.copyProperties(cartDTO, cart);
-        Cart result = cartRepository.save(cart);
-        CartDTO resultDTO = new CartDTO();
-        BeanUtils.copyProperties(result, resultDTO);
-        return resultDTO;
+    public boolean createCart(CartDTO cartDTO,String token) {
+        String ctoken = token;
+        String cemail = cartDTO.getEmail();
+
+        final String uri = "http://localhost:8081/checktoken?token="+ctoken+"&email="+cemail;
+
+        RestTemplate restTemplate = new RestTemplate();
+        boolean status = restTemplate.getForObject(uri, boolean.class);
+
+        if (status == true) {
+            Cart cart = new Cart();
+            BeanUtils.copyProperties(cartDTO, cart);
+            Cart result = cartRepository.save(cart);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -36,16 +49,24 @@ public class CartServiceImpl implements CartService {
         return resultDTO;
     }
 
+    @Transactional
     @Override
-    public CartDTO deleteCart(String email) {
-        cartRepository.delete(email);
-        return null;
+    public Boolean deleteCart(String email) {
+        cartRepository.deleteAllByEmail(email);
+        System.out.println("Deleteing entries for " + email);;
+        return true;
     }
 
     @Transactional
     @Override
-    public void deleteParticularProduct(String productId, String variantId, String email) {
-        cartRepository.deleteByProductIdAndVariantIdAndEmail(productId,variantId,email);
+    public boolean deleteParticularProduct(String productId, String variantId, String merchantId,String email) {
+         cartRepository.deleteByProductIdAndVariantIdAndMerchantIdAndEmail(productId,variantId,merchantId,email);
+         return true;
+    }
+
+    @Override
+    public List<Cart> getEverythingFromCart(String email) {
+        return cartRepository.findAllByEmail(email);
     }
 
 }
